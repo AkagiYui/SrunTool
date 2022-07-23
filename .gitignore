@@ -10,6 +10,7 @@ old
 start_account
 # C extensions
 *.so
+venv*/
 
 # Distribution / packaging
 .Python
