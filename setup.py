@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 long_description = pathlib.Path('README.md').read_text(encoding='utf-8')  # 读取README.md文件内容
 setup(
     name='sruntool',  # 包名
-    version='0.1.2',  # 版本号
+    version='0.1.3',  # 版本号
     author='AkagiYui',  # 作者
     author_email='akagiyui@yeah.net',  # 作者邮箱
     description='A library that can operate srun network',  # 描述
