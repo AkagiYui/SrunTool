@@ -1,5 +1,7 @@
 # SrunTool
 
+[![build](https://github.com/AkagiYui/SrunTool/workflows/build/badge.svg)](https://github.com/AkagiYui/SrunTool/actions?query=workflow%3Abuild)  [![pypi](https://img.shields.io/pypi/v/sruntool.svg)](https://pypi.org/project/sruntool/)  ![support-version](https://img.shields.io/pypi/pyversions/sruntool)  [![license](https://img.shields.io/github/license/AkagiYui/SrunTool)](https://github.com/AkagiYui/SrunTool/blob/master/LICENSE)  [![commit](https://img.shields.io/github/last-commit/AkagiYui/SrunTool)](https://github.com/AkagiYui/SrunTool/commits/master)
+
 深澜校园网操作类，本软件包内容仅在 [NCWU](https://www.ncwu.edu.cn/) 经过测试。
 
 支持
@@ -18,7 +20,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple sruntool
 ## 使用
 
 ```python
-from sruntool.SrunOperator import SrunOperator, get_explain
+from sruntool import SrunOperator, get_explain
 
 if __name__ == '__main__':
     account = '16612345678'  # 账号
@@ -35,6 +37,7 @@ if __name__ == '__main__':
 
         # 不延时容易造成请求频繁
         from time import sleep
+
         sleep(1)
 
         r = so.logout(account)

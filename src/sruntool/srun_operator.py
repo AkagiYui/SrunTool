@@ -7,7 +7,7 @@ from typing import Union
 import requests
 import re
 from sruntool.ecode_explain import ecode_explain
-from sruntool.SrunEncrypt import SrunEncrypt
+from sruntool.srun_encrypt import SrunEncrypt
 from sruntool.exception import TooFastException
 from sruntool.utils import get_hmac_md5, get_sha1
 
