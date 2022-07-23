@@ -93,8 +93,8 @@ class SrunEncrypt:
             x.append(cls._ALPHA[(b10 >> 18)] + cls._ALPHA[((b10 >> 12) & 63)] + cls._PADCHAR + cls._PADCHAR)
         else:
             b10 = (cls._getbyte(s, i) << 16) | (cls._getbyte(s, i + 1) << 8)
-            x.append(cls._ALPHA[(b10 >> 18)] + cls._ALPHA[((b10 >> 12) & 63)] +
-                     cls._ALPHA[((b10 >> 6) & 63)] + cls._PADCHAR)
+            x.append(cls._ALPHA[(b10 >> 18)] + cls._ALPHA[((b10 >> 12) & 63)]
+                     + cls._ALPHA[((b10 >> 6) & 63)] + cls._PADCHAR)
         return ''.join(x)
 
     @classmethod
@@ -106,4 +106,3 @@ class SrunEncrypt:
             print('INVALID_CHARACTER_ERR: DOM Exception 5')
             exit(0)
         return x
-

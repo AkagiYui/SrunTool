@@ -1,16 +1,16 @@
+import base64
 import json
 import os
+import re
 import time
-import base64
-from typing import Union
+from typing import Union, Tuple
 
 import requests
-import re
-from sruntool.ecode_explain import ecode_explain
-from sruntool.srun_encrypt import SrunEncrypt
-from sruntool.exception import TooFastException
-from sruntool.utils import get_hmac_md5, get_sha1
 
+from sruntool.ecode_explain import ecode_explain
+from sruntool.exception import TooFastException
+from sruntool.srun_encrypt import SrunEncrypt
+from sruntool.utils import get_hmac_md5, get_sha1
 
 # 常见的错误码
 # E2531 用户不存在
@@ -50,7 +50,7 @@ class SrunOperator:
         初始化，设置认证服务器、子网id、回调名称等参数
 
         :param auth_server: 认证服务器
-        :param ac_id: 子网id
+        :param ac_id: 重定向标识符
         :param callback: 回调名称
         :param _name:
         :param _type: 平台类型
@@ -67,7 +67,7 @@ class SrunOperator:
         self.base_url = f'{self.protocol}://{auth_server}/cgi-bin'  # 基础url
         self.url_srun_portal = f'{auth_server}/srun_portal'  # 深澜入口 url
 
-    def _get_token_and_ip(self, username: str) -> (str, str):
+    def _get_token_and_ip(self, username: str) -> Tuple[str, str]:
         """
         获取token和ip，用于登录
 
@@ -118,18 +118,19 @@ class SrunOperator:
         hmd5 = get_hmac_md5(password, token)
 
         # 账号信息加密
-        info = {
+        info_dict = {
             'username': username,
             'password': password,
             'ip': ip,
             'acid': self.ac_id,
             'enc_ver': 'srun_bx1'
         }
-        info = re.sub("'", '"', str(info))  # 单引号转双引号
-        info = re.sub(' ', '', info)  # 删所有空
-        info = SrunEncrypt.get_xencode(info, token)  # srun自家加密
-        info = SrunEncrypt.get_base64(info)  # srun魔改base64加密
-        info = '{SRBX1}' + info
+        info_str = str(info_dict)
+        info_str = re.sub("'", '"', info_str)  # 单引号转双引号
+        info_str = re.sub(' ', '', info_str)  # 删所有空
+        info_str = SrunEncrypt.get_xencode(info_str, token)  # srun自家加密
+        info_str = SrunEncrypt.get_base64(info_str)  # srun魔改base64加密
+        info_str = '{SRBX1}' + info_str
 
         # 计算校验和
         chksum = token + username
@@ -138,7 +139,7 @@ class SrunOperator:
         chksum += token + ip
         chksum += token + self.n
         chksum += token + self._type
-        chksum += token + info
+        chksum += token + info_str
         chksum = get_sha1(chksum)
 
         params = {
@@ -149,7 +150,7 @@ class SrunOperator:
             'ac_id': self.ac_id,
             'ip': ip,
             'chksum': chksum,
-            'info': info,
+            'info': info_str,
             'n': self.n,
             'type': self._type,
             'os': os,  # TODO: 这是什么
